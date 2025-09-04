@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name – Personal Site</title>
+  <meta name="description" content="Portfolio • Research • Publications • Contact" />
+  <meta property="og:title" content="Your Name – Personal Site" />
+  <meta property="og:description" content="Portfolio • Research • Publications • Contact" />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230a84ff'/%3E%3Ctext x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji'%3EY%3C/text%3E%3C/svg%3E" />
+  <style>
+    /* --- Reset / base --- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #ffffff; --fg: #0b1020; --muted: #606b86; --card: #f6f7fb;
+      --accent: #0a84ff; --accent-2: #7c3aed; --ring: rgba(10,132,255,.3);
+      --shadow: 0 10px 25px rgba(2,8,23,.06), 0 2px 6px rgba(2,8,23,.08);
+      --radius: 16px; --radius-lg: 24px; --maxw: 1080px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0a0f1a; --fg: #e5e7ef; --muted: #a5adcb; --card: #0f1524; --shadow: 0 10px 30px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.2); }
+    }
+    body { margin: 0; font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; color: var(--fg); background: radial-gradient(1200px 800px at 10% -5%, rgba(10,132,255,.08), transparent 40%), radial-gradient(1200px 800px at 90% -5%, rgba(124,58,237,.08), transparent 40%), var(--bg); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(100%, var(--maxw)); margin-inline: auto; padding-inline: 20px; }
+    .pill { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent); padding: .5rem .9rem; border-radius: 999px; background: color-mix(in oklab, var(--card) 65%, transparent); text-decoration: none; color: inherit; box-shadow: var(--shadow); }
+    .btn { display: inline-flex; align-items: center; gap: .6rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 600; border: 1px solid color-mix(in oklab, var(--fg) 10%, transparent); background: var(--bg); color: var(--fg); box-shadow: var(--shadow); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; border: 0; }
+    .btn:hover { transform: translateY(-1px); }
+
+    /* --- Header / nav --- */
+    header { position: sticky; top: 0; backdrop-filter: saturate(140%) blur(10px); background: color-mix(in oklab, var(--bg) 65%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--fg) 8%, transparent); z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav a.brand { font-weight: 800; letter-spacing: .2px; color: var(--fg); }
+    .nav .links { display: flex; gap: 1rem; align-items: center; }
+    .nav .links a { color: var(--muted); font-weight: 600; padding: .4rem .6rem; border-radius: 10px; }
+    .nav .links a:hover { background: color-mix(in oklab, var(--card) 70%, transparent); color: var(--fg); text-decoration: none; }
+
+    /* --- Hero --- */
+    .hero { display: grid; gap: 28px; align-items: center; grid-template-columns: 140px 1fr; padding: 56px 0 28px; }
+    .avatar { width: 140px; height: 140px; border-radius: 50%; border: 6px solid color-mix(in oklab, var(--bg) 70%, transparent); box-shadow: var(--shadow); object-fit: cover; background: var(--card); }
+    .hero h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.1; margin: 0 0 6px; }
+    .hero .subtitle { font-size: 18px; color: var(--muted); margin-top: 2px; }
+    .affils { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .badges { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 16px; }
+
+    /* --- Sections --- */
+    section { padding: 44px 0; }
+    section h2 { font-size: 24px; margin: 0 0 18px; }
+    .card { background: var(--card); border: 1px solid color-mix(in oklab, var(--fg) 10%, transparent); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); }
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    @media (max-width: 900px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } .hero { grid-template-columns: 100px 1fr; } .avatar { width: 100px; height: 100px; } }
+
+    /* --- Timeline --- */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: color-mix(in oklab, var(--fg) 15%, transparent); }
+    .tl-item { position: relative; margin-bottom: 18px; }
+    .tl-item::before { content: ""; position: absolute; left: -3px; top: 4px; width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 20%, transparent); }
+
+    /* --- Footer --- */
+    footer { padding: 30px 0 60px; color: var(--muted); }
+
+    /* --- Utilities --- */
+    .muted { color: var(--muted); }
+    .nowrap { white-space: nowrap; }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  </style>
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top">Your Name</a>
+      <nav class="links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#publications">Publications</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <button id="themeToggle" class="pill" title="Toggle theme" aria-pressed="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.64 13a9 9 0 11-10.63-10.63 1 1 0 00.7 1.73A7 7 0 1019.91 12.3a1 1 0 001.73-.7z"/></svg>
+          <span class="sr-only">Toggle theme</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="top" class="container">
+    <div class="hero">
+      <img class="avatar" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=300&auto=format&fit=crop" alt="Your portrait" />
+      <div>
+        <h1>Your Name</h1>
+        <div class="subtitle">Your Role • Your Department</div>
+        <div class="affils">
+          <a class="pill" href="#" target="_blank" rel="noopener">Your Institution</a>
+          <a class="pill" href="#" target="_blank" rel="noopener">Your Lab / Group</a>
+        </div>
+        <div class="badges">
+          <a class="btn primary" href="#publications">Publications</a>
+          <a class="btn" href="#cv">CV</a>
+          <a class="btn" href="#projects">Tutorials & Notes</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <section id="about">
+      <h2>About Me</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <p>
+            Brief bio goes here. Summarize your research interests, current work, and a sentence or two about your wider interests or teaching. Keep it 3–6 sentences for readability.
+          </p>
+          <h3>Interests</h3>
+          <ul>
+            <li>• Topic one with a focus area</li>
+            <li>• Topic two with a method or tool</li>
+            <li>• Topic three with an outcome</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Education</h3>
+          <div class="timeline">
+            <div class="tl-item"><strong>Ph.D., Field</strong> — 2023–Present<br><span class="muted">Your University, Country</span></div>
+            <div class="tl-item"><strong>M.S., Field</strong> — 2020–2022<br><span class="muted">Your University, Country</span></div>
+            <div class="tl-item"><strong>B.S., Field</strong> — 2016–2020<br><span class="muted">Your University, Country</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications">
+      <h2>Selected Publications</h2>
+      <div class="grid cols-2">
+        <article class="card">
+          <h3><a href="#">Title of Paper One</a></h3>
+          <p class="muted">Author One, Author Two, <span class="nowrap">Journal • 2024</span></p>
+          <p>1–2 sentence plain-language summary of what the paper accomplishes and why it matters.</p>
+          <div class="row">
+            <a class="pill" href="#" target="_blank" rel="noopener">DOI</a>
+            <a class="pill" href="#" target="_blank" rel="noopener">arXiv</a>
+            <a class="pill" href="#" target="_blank" rel="noopener">ADS</a>
+          </div>
+        </article>
+        <article class="card">
+          <h3><a href="#">Title of Paper Two</a></h3>
+          <p class="muted">You, Collaborators, <span class="nowrap">Conference • 2023</span></p>
+          <p>Short description or key result. Include a link to a poster or slides if available.</p>
+          <div class="row">
+            <a class="pill" href="#" target="_blank" rel="noopener">PDF</a>
+            <a class="pill" href="#" target="_blank" rel="noopener">Code</a>
+          </div>
+        </article>
+      </div>
+      <p class="muted" style="margin-top:12px">Full list on <a href="#" target="_blank" rel="noopener">Google Scholar</a> or <a href="#" target="_blank" rel="noopener">NASA ADS</a>.</p>
+    </section>
+
+    <!-- Projects / Tutorials -->
+    <section id="projects">
+      <h2>Tutorials & Notes</h2>
+      <div class="grid cols-3">
+        <a class="card" href="#" style="text-decoration:none">
+          <h3>Notebook: Method A</h3>
+          <p class="muted">Quickstart • 5 min read</p>
+          <p>Short blurb about what a reader will learn.</p>
+        </a>
+        <a class="card" href="#">
+          <h3>Guide: Tool B</h3>
+          <p class="muted">How-to • 8 min read</p>
+          <p>Tips, pitfalls, and best practices summarized.</p>
+        </a>
+        <a class="card" href="#">
+          <h3>Slides: Talk C</h3>
+          <p class="muted">Slides • 2024</p>
+          <p>One-liner on venue or topic.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- CV -->
+    <section id="cv">
+      <h2>CV</h2>
+      <div class="card">
+        <p>Link to your latest CV (PDF) hosted anywhere you like.</p>
+        <a class="btn" href="#" target="_blank" rel="noopener">Download CV</a>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <p>Email: <a href="mailto:you@university.edu">you@university.edu</a><br/>
+             Office: Building / Address<br/>
+             Social: 
+             <a href="#" target="_blank" rel="noopener">GitHub</a> ·
+             <a href="#" target="_blank" rel="noopener">ORCID</a> ·
+             <a href="#" target="_blank" rel="noopener">Google Scholar</a>
+          </p>
+        </div>
+        <div class="card">
+          <form onsubmit="event.preventDefault(); alert('Thanks! This demo form is not wired up.');" aria-label="Contact form">
+            <label>
+              <span class="sr-only">Your email</span>
+              <input required type="email" placeholder="you@example.com" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid color-mix(in oklab, var(--fg) 12%, transparent); background:var(--bg); color:var(--fg);" />
+            </label>
+            <div style="height:10px"></div>
+            <label>
+              <span class="sr-only">Your message</span>
+              <textarea required rows="4" placeholder="Hello!" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid color-mix(in oklab, var(--fg) 12%, transparent); background:var(--bg); color:var(--fg);"></textarea>
+            </label>
+            <div style="height:12px"></div>
+            <button class="btn primary" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container">
+      <div class="row" style="justify-content: space-between; align-items: center;">
+        <small>© <span id="year"></span> Your Name · Built with a lightweight vanilla HTML/CSS template.</small>
+        <small>Last updated <time id="lastUpdated" datetime="">today</time></small>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Theme toggle with localStorage
+    const themeBtn = document.getElementById('themeToggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    themeBtn?.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme;
+      const next = current === 'light' ? 'dark' : current === 'dark' ? '' : (prefersDark ? 'light' : 'dark');
+      if (next) { document.documentElement.dataset.theme = next; localStorage.setItem('theme', next); }
+      else { document.documentElement.removeAttribute('data-theme'); localStorage.removeItem('theme'); }
+      themeBtn.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
+    });
+
+    // Footer dates
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const d = new Date();
+    const iso = d.toISOString();
+    document.getElementById('lastUpdated').dateTime = iso;
+    document.getElementById('lastUpdated').textContent = d.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+  </script>
+</body>
+</html>
